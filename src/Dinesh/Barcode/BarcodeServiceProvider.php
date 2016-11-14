@@ -18,11 +18,9 @@ class BarcodeServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function boot() {
-
-        $this->package('dinesh/barcode');
-
-        //include __DIR__ . '/../../routes.php';
+    public function boot()
+    {
+        //
     }
 
     /**
@@ -30,25 +28,15 @@ class BarcodeServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
+        $this->app->bind('DNS1D', function ($app) {
+            return new DNS1D;
+        });
 
-        $this->app['DNS1D'] = $this->app->share(function($app) {
-                    return new DNS1D;
-                });
-        $this->app['DNS2D'] = $this->app->share(function($app) {
-                    return new DNS2D;
-                });
-//
-        // Shortcut so developers don't need to add an Alias in app/config/app.php
-        $this->app->booting(function() {
-                    $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-                    $loader->alias('DNS1D', 'Dinesh\Barcode\Facades\DNS1DFacade');
-                });
-
-        $this->app->booting(function() {
-                    $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-                    $loader->alias('DNS2D', 'Dinesh\Barcode\Facades\DNS2DFacade');
-                });
+        $this->app->bind('DNS2D', function ($app) {
+            return new DNS2D;
+        });
     }
 
     /**
